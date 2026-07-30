@@ -1,0 +1,75 @@
+services:
+  - type: web
+    name: bot-buscador-preco
+    runtime: python
+    region: virginia
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot_busca_preco.py
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: TIMEZONE
+        value: America/Sao_Paulo
+      - key: WEBHOOK_ENABLED
+        value: "true"
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false
+      - key: TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: ADMIN_USER_IDS
+        sync: false
+      - key: SUPPORT_CONTACT
+        sync: false
+      - key: SALES_MESSAGE
+        sync: false
+      - key: LICENSE_PAYMENT_URL
+        sync: false
+      - key: PROJECT_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5.6
+      - key: OPENAI_MAX_OUTPUT_TOKENS
+        value: "7000"
+      - key: OPENAI_TIMEOUT_SECONDS
+        value: "420"
+      - key: OPENAI_SEARCH_CONTEXT
+        value: medium
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bot-buscador-preco-db
+          property: connectionString
+      - key: BASIC_MONTHLY_QUOTA
+        value: "20"
+      - key: PREMIUM_MONTHLY_PRICE_BRL
+        value: "9.90"
+      - key: MAX_ACTIVE_REQUESTS_PER_USER
+        value: "1"
+      - key: DEFAULT_CAPITAL_BRL
+        value: "5000"
+      - key: DEFAULT_MARGIN_PERCENT
+        value: "20"
+      - key: DEFAULT_ROI_PERCENT
+        value: "25"
+      - key: DEFAULT_MAX_PRODUCT_ALLOCATION_PERCENT
+        value: "25"
+      - key: JOB_POLL_SECONDS
+        value: "2"
+      - key: JOB_MAX_ATTEMPTS
+        value: "2"
+      - key: STALE_JOB_MINUTES
+        value: "15"
+
+databases:
+  - name: bot-buscador-preco-db
+    region: virginia
+    databaseName: bot_buscador_preco
+    user: bot_buscador_preco
+    ipAllowList: []
